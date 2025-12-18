@@ -59,8 +59,16 @@ OPENAI_API_KEY=your_key_here
 
 ## ▶️ Run (Gradio UI)
 From the project root:
+
+Windows PowerShell:
 ```
-python app.py
+$env:PYTHONPATH="src"
+python src/self_healing_parser/app.py
+```
+
+macOS / Linux:
+```
+PYTHONPATH=src python src/self_healing_parser/app.py
 ```
 Open the URL Gradio prints in your terminal.
 
