@@ -88,6 +88,9 @@ This reduces risk when executing model-generated code, but no sandbox is perfect
 - The sandbox prioritizes practicality for learning/demo purposes, not formal security guarantees.
 - Output quality depends on how clear the extraction requirements are.
 
+## UI Example Run
+<img width="1904" height="942" alt="demo parser final 1" src="https://github.com/user-attachments/assets/a62ed280-9f61-4426-ac16-43513b8e28b6" />
+
 ## 🧠 Why This Works (System Design Insight)
 This project works reliably because it treats LLMs as reasoning engines, not execution engines, and wraps them inside a deterministic, self-correcting system.
 
