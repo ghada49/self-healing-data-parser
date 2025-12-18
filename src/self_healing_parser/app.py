@@ -2,7 +2,7 @@ import gradio as gr
 from self_healing_parser.agent.agent import process_data
 
 
-with gr.Blocks(theme=gr.themes.Monochrome()) as app:
+with gr.Blocks() as app:
     gr.Markdown("# Self-Healing Data Parser")
     gr.Markdown("Agent writes code, tests it, fixes it, and returns clean JSON.")
 
@@ -31,4 +31,4 @@ with gr.Blocks(theme=gr.themes.Monochrome()) as app:
     )
 
 if __name__ == "__main__":
-    app.launch()
+    app.launch(theme=gr.themes.Soft())

@@ -87,3 +87,63 @@ This reduces risk when executing model-generated code, but no sandbox is perfect
 - Some adversarial payloads may bypass naive string-based blocklists.
 - The sandbox prioritizes practicality for learning/demo purposes, not formal security guarantees.
 - Output quality depends on how clear the extraction requirements are.
+
+## 🧠 Why This Works (System Design Insight)
+This project works reliably because it treats LLMs as reasoning engines, not execution engines, and wraps them inside a deterministic, self-correcting system.
+
+1. Agentic, Not Prompt-Based
+
+Instead of a single prompt → output flow, this system uses an agent loop:
+- The model writes parsing code
+- The code is executed in a sandbox
+- Failures are observed, reflected on, and fixed
+- Only verified outputs are accepted
+
+2. Execution-Grounded Accuracy
+The LLM is never trusted to describe extracted data.
+Instead:
+- It must write a real parse_data(text) function
+- That function is executed against real input
+- Outputs must be JSON-serializable
+- Invalid logic fails fast and triggers retries
+This eliminates hallucination and converts probabilistic reasoning into deterministic, verifiable outcomes.
+
+3. Defensive Parsing by Design
+
+The agent is explicitly instructed to assume broken, inconsistent, real-world data, such as:
+- Missing delimiters
+- Unclosed or escaped quotes
+- Mixed casing
+- Fields appearing in different orders
+- Values bleeding into neighboring fields
+
+Parsing rules enforce:
+- One-field-at-a-time extraction
+- Explicit boundary detection
+- Type validation
+- Deduplication and sorting guarantees
+
+This makes the system resilient to logs, tickets, exports, and scraped text that would break traditional parsers.
+
+4. Safety and Performance Guarantees
+
+The sandbox enforces:
+- No imports
+- No filesystem or network access
+- No dynamic execution primitives
+- Hard execution timeouts
+
+Combined with:
+- Line-by-line parsing
+-Simple, bounded regex usage
+- Explicit performance constraints
+
+5. Cost-Efficient by Architecture
+Accuracy comes from system structure, not model size.
+
+The project intentionally uses:
+- Small, fast models (e.g. gpt-4o-mini)
+- Deterministic temperature settings
+- Retry logic instead of overpowered models
+
+This mirrors real production constraints: budget, latency, and reliability.
